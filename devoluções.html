@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="logo.ico" />
+  <title>Devoluções — Puss in Boots Grand Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-light: #f1d27a;
+      --emerald: #0f3d2e;
+      --emerald-light: #1a5c45;
+      --orange: #e07a2f;
+      --dark: #0c0c0c;
+      --cream: #f8f1e3;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--cream);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      background: radial-gradient(ellipse at bottom, #1a2a1f 0%, #0c0c0c 70%);
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(12, 12, 12, 0.75);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+      z-index: 1000;
+      transition: all 0.4s ease;
+    }
+
+    nav.scrolled {
+      padding: 0.7rem 5%;
+      background: rgba(12, 12, 12, 0.92);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+
+    .logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      letter-spacing: 1px;
+    }
+
+    .logo span {
+      color: var(--cream);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--cream);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gold);
+      transition: width 0.35s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .cart-btn {
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      color: #111;
+      border: none;
+      padding: 0.7rem 1.4rem;
+      border-radius: 50px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .cart-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+    }
+
+    /* ===== PAGE CONTENT ===== */
+    .page-hero {
+      padding: 10rem 5% 4rem;
+      text-align: center;
+    }
+
+    .page-hero h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.4rem, 5vw, 3.4rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .page-hero p {
+      font-size: 1.15rem;
+      opacity: 0.85;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .content-wrapper {
+      max-width: 820px;
+      margin: 0 auto 5rem;
+      padding: 0 5%;
+    }
+
+    .alerta {
+      background: linear-gradient(145deg, #2a1212, #1a0a0a);
+      border: 2px solid #e53e3e;
+      border-radius: 18px;
+      padding: 2rem 2.2rem;
+      text-align: center;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 0 40px rgba(229, 62, 62, 0.15);
+    }
+
+    .alerta h2 {
+      font-family: 'Cinzel', serif;
+      color: #ff6b6b;
+      font-size: 1.7rem;
+      margin-bottom: 0.7rem;
+      letter-spacing: 1px;
+    }
+
+    .alerta p {
+      color: #f8d7da;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .card {
+      background: linear-gradient(145deg, #1a1a1a, #141414);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 20px;
+      padding: 2.2rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .card h3 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      font-size: 1.35rem;
+      margin-bottom: 1rem;
+    }
+
+    .card p {
+      opacity: 0.9;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .card ul {
+      margin: 1rem 0 0 1.4rem;
+      opacity: 0.9;
+    }
+
+    .card ul li {
+      margin-bottom: 0.6rem;
+      line-height: 1.5;
+    }
+
+    .destaque {
+      background: rgba(212, 175, 55, 0.08);
+      border-left: 4px solid var(--gold);
+      padding: 1.2rem 1.5rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1.5rem 0;
+    }
+
+    .destaque strong {
+      color: var(--gold-light);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #0a0a0a;
+      border-top: 1px solid rgba(212,175,55,0.2);
+      padding: 4rem 5% 2rem;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-col h4 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+      font-size: 1.2rem;
+    }
+
+    .footer-col a, .footer-col p {
+      color: rgba(248,241,227,0.7);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.6rem;
+      transition: color 0.3s;
+    }
+
+    .footer-col a:hover {
+      color: var(--gold);
+    }
+
+    .copyright {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      color: rgba(248,241,227,0.5);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .page-hero { padding-top: 8rem; }
+      .alerta h2 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+
+  <!-- Navbar -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      🐱 <span>Puss in Boots</span> Grand Marketplace
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#categorias">Categorias</a></li>
+      <li><a href="index.html#avaliacoes">Avaliações</a></li>
+      <li><a href="ofertas.html">Ofertas</a></li>
+      <li><a href="Envios.html">Envios</a></li>
+    </ul>
+    <a href="formulario-pagamento.html" class="cart-btn" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">
+      🛒 Pagar Produto <span style="background:#111;color:var(--gold);padding:2px 8px;border-radius:50px;font-size:0.85rem;">3</span>
+    </a>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <h1>Política de Devoluções</h1>
+    <p>Informação clara e transparente sobre a nossa política de devoluções e reembolsos.</p>
+  </section>
+
+  <div class="content-wrapper">
+    <!-- Alerta principal -->
+    <div class="alerta">
+      <h2>⚠ NÃO HAVERÁ REEMBOLSOS</h2>
+      <p>Todos os pagamentos são finais. Não efetuamos qualquer tipo de reembolso.</p>
+    </div>
+
+    <div class="card">
+      <h3>Política Geral</h3>
+      <p>
+        Ao efetuar uma compra no <strong>Puss in Boots Grand Marketplace</strong>, o cliente declara ter lido e aceite integralmente esta política de devoluções.
+      </p>
+      <p>
+        Devido à natureza digital e promocional dos produtos e serviços oferecidos, 
+        <strong>não são aceites devoluções nem pedidos de reembolso</strong> em nenhuma circunstância.
+      </p>
+
+      <div class="destaque">
+        <strong>Importante:</strong> O preço promocional apresentado é final. 
+        Não existem reembolsos parciais ou totais, independentemente do motivo apresentado.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Casos em que não se aplica reembolso</h3>
+      <ul>
+        <li>Mudança de opinião após a compra</li>
+        <li>Erro na escolha do produto ou serviço</li>
+        <li>Problemas técnicos do lado do cliente</li>
+        <li>Atraso na entrega por fatores externos</li>
+        <li>Qualquer outro motivo, mesmo que justificado</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Contacto</h3>
+      <p>
+        Caso tenha alguma dúvida sobre esta política, pode entrar em contacto connosco através do email 
+        <strong style="color: var(--gold);">suporte123452@gmail.com</strong>.
+      </p>
+      <p>
+        No entanto, relembramos que a nossa posição relativamente a reembolsos é definitiva e não negociável.
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-col">
+        <h4>Puss in Boots</h4>
+        <p>O marketplace oficial do gato mais elegante e ousado de todos os tempos e Streamer do TIKTOK.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Links Rápidos</h4>
+        <a href="index.html#categorias">Categorias</a>
+        <a href="index.html#avaliacoes">Avaliações</a>
+        <a href="ofertas.html">Ofertas</a>
+      </div>
+      <div class="footer-col">
+        <h4>Ajuda</h4>
+        <a href="Envios.html">Envios</a>
+        <a href="devolucoes.html">Devoluções</a>
+        <a href="cashback.html">CashBack</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <p>📞 +351 913 641 764</p>
+        <p>📍 Porto</p>
+      </div>
+    </div>
+    <div class="copyright">
+      © 2026 Puss in Boots Grand Marketplace — Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    // Particles
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 60, density: { enable: true, value_area: 800 } },
+        color: { value: "#d4af37" },
+        shape: { type: "circle" },
+        opacity: { value: 0.4, random: true },
+        size: { value: 3, random: true },
+        line_linked: {
+          enable: true,
+          distance: 140,
+          color: "#d4af37",
+          opacity: 0.15,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: 1.2,
+          direction: "none",
+          random: true,
+          out_mode: "out"
+        }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: {
+          onhover: { enable: true, mode: "grab" },
+          onclick: { enable: true, mode: "push" }
+        },
+        modes: {
+          grab: { distance: 140, line_linked: { opacity: 0.4 } },
+          push: { particles_nb: 3 }
+        }
+      },
+      retina_detect: true
+    });
+
+    // Navbar scroll
+    window.addEventListener("scroll", () => {
+      document.getElementById("navbar").classList.toggle("scrolled", window.scrollY > 50);
+    });
+  </script>
+</body>
+</html>

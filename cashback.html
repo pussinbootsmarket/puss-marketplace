@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="logo.ico" />
+  <title>CashBack | Puss in Boots Grand Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-light: #f1d27a;
+      --orange: #e07a2f;
+      --dark: #0c0c0c;
+      --cream: #f8f1e3;
+      --red: #ef4444;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--cream);
+      overflow-x: hidden;
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%; height: 100%;
+      top: 0; left: 0;
+      z-index: -1;
+      background: radial-gradient(ellipse at bottom, #1a2a1f 0%, #0c0c0c 70%);
+    }
+
+    nav {
+      position: fixed;
+      top: 0; width: 100%;
+      padding: 1rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(12, 12, 12, 0.75);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+      z-index: 1000;
+      transition: all 0.4s ease;
+    }
+
+    nav.scrolled {
+      padding: 0.7rem 5%;
+      background: rgba(12, 12, 12, 0.92);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+
+    .logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .logo span { color: var(--cream); font-weight: 600; font-size: 1.1rem; }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+
+    .nav-links a {
+      color: var(--cream);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.35s ease;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .cart-btn {
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      color: #111;
+      border: none;
+      padding: 0.7rem 1.4rem;
+      border-radius: 50px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .page-header {
+      padding: 10rem 5% 3rem;
+      text-align: center;
+    }
+
+    .page-header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.2rem, 5vw, 3.3rem);
+      background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .section {
+      padding: 1rem 5% 5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 500;
+      margin-bottom: 2rem;
+    }
+
+    .main-box {
+      background: linear-gradient(145deg, #1a1a1a, #111);
+      border: 2px solid rgba(212, 175, 55, 0.35);
+      border-radius: 22px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 0 40px rgba(212, 175, 55, 0.12);
+    }
+
+    .main-box h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.7rem;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 2rem;
+      line-height: 1.4;
+    }
+
+    .tier {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .tier:hover {
+      border-color: rgba(212, 175, 55, 0.4);
+      background: rgba(212, 175, 55, 0.05);
+    }
+
+    .tier-name {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--gold-light);
+      margin-bottom: 0.4rem;
+    }
+
+    .tier-desc {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      line-height: 1.55;
+    }
+
+    .cashback-link {
+      color: var(--gold);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-weight: 700;
+    }
+
+    .cashback-link:hover { color: var(--gold-light); }
+
+    .center-text {
+      text-align: center;
+      margin: 2rem 0 1.5rem;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .center-text a {
+      color: #60a5fa;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .warning-box {
+      background: linear-gradient(135deg, #61a2f8, #3effd5);
+      border: 2px solid #ff0000;
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      margin-top: 2rem;
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.35);
+    }
+
+    .warning-box p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #000000;
+    }
+
+    .warning-box .red-bright {
+      color: #ff4d4d;
+      font-weight: 800;
+      text-shadow: 0 0 10px rgba(255, 77, 77, 0.6);
+    }
+
+    footer {
+      background: #0a0a0a;
+      border-top: 1px solid rgba(212,175,55,0.2);
+      padding: 4rem 5% 2rem;
+      margin-top: 2rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-col h4 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+      font-size: 1.2rem;
+    }
+
+    .footer-col a, .footer-col p {
+      color: rgba(248,241,227,0.7);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.6rem;
+    }
+
+    .footer-col a:hover { color: var(--gold); }
+
+    .copyright {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      color: rgba(248,241,227,0.5);
+      font-size: 0.9rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.7s cubic-bezier(0.5, 0, 0, 1);
+    }
+
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .page-header { padding-top: 8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      🐱 <span>Puss in Boots</span> Grand Marketplace
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#categorias">Categorias</a></li>
+      <li><a href="index.html#produtos">Produtos</a></li>
+      <li><a href="ofertas.html">Ofertas</a></li>
+      <li><a href="Envios.html">Envios</a></li>
+    </ul>
+    <a href="formulario-pagamento.html" class="cart-btn" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">🛒 Pagar Produto</a>
+  </nav>
+
+  <header class="page-header">
+    <h1>💰 Sistema de CashBack</h1>
+    <p>Vantagens exclusivas para quem faz parte da família do Gato das Botas.</p>
+  </header>
+
+  <main class="section">
+    <a href="index.html" class="back-link">← Voltar ao Início</a>
+
+    <div class="main-box reveal">
+      <h2>És Parceiro e ajudante nas Batalhas do Gato das Botas?</h2>
+
+      <p style="text-align:center; margin-bottom:1.8rem; opacity:0.9;">
+        Se para o CRIADOR tu fores alguém que te considera como:
+      </p>
+
+      <div class="tier">
+        <div class="tier-name">💕 NAMORADA (EXCLUSIVO)</div>
+        <div class="tier-desc">
+          Terá <strong>75%</strong> de <a href="https://pt.wikipedia.org/wiki/Site_de_cashback" target="_blank" class="cashback-link">CashBack</a> em qualquer produto desta Categoria onde você se encontra.
+        </div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-name">🤝 SÓCIOS</div>
+        <div class="tier-desc">
+          (Se trabalhas como VENDEDOR daqui OU se és parceiro OFICIAL do CRIADOR)<br>
+          Terás <strong>15%</strong> de <a href="https://pt.wikipedia.org/wiki/Site_de_cashback" target="_blank" class="cashback-link">CashBack</a> em qualquer produto desta Categoria onde você se encontra.
+        </div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-name">🌟 APOIADOR</div>
+        <div class="tier-desc">
+          (Se apoiaste TODO o progresso do Criador desde o Início das lives)<br>
+          Terás <strong>17%</strong> de <a href="https://pt.wikipedia.org/wiki/Site_de_cashback" target="_blank" class="cashback-link">CashBack</a> em qualquer produto desta Categoria onde você se encontra.
+        </div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-name">🎁 TOP 1 PRESENTEADOR</div>
+        <div class="tier-desc">
+          (Se és TOP 1 Presenteador do mês atual OU se foste o TOP 1 Presenteador do Mês Passado)<br>
+          Terás <strong>15%</strong> de <a href="https://pt.wikipedia.org/wiki/Site_de_cashback" target="_blank" class="cashback-link">CashBack</a> em qualquer produto desta Categoria onde você se encontra.
+        </div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-name">🧡 MELHOR AMIGO</div>
+        <div class="tier-desc">
+          Terás <strong>12%</strong> de <a href="https://pt.wikipedia.org/wiki/Site_de_cashback" target="_blank" class="cashback-link">CashBack</a> em qualquer produto desta Categoria onde você se encontra.
+        </div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-name">😊 AMIGO</div>
+        <div class="tier-desc">
+          Terás <strong>5%</strong> de <a href="https://pt.wikipedia.org/wiki/Site_de_cashback" target="_blank" class="cashback-link">CashBack</a> em qualquer produto desta Categoria onde você se encontra.
+        </div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-name">👋 CONHECIDO</div>
+        <div class="tier-desc">
+          Terás <strong>2%</strong> de <a href="https://pt.wikipedia.org/wiki/Site_de_cashback" target="_blank" class="cashback-link">CashBack</a> em qualquer produto desta Categoria onde você se encontra.
+        </div>
+      </div>
+
+      <div class="center-text">
+        Não sabes como o CRIADOR te considera?<br>
+        Manda mensagem para o Discord na <a href="https://discord.com/users/1416897999417901239" target="_blank">DM do CRIADOR</a>!
+      </div>
+
+      <div class="warning-box">
+        <p>
+          Se falar para os Vendedores que você é considerado X pessoa e não ser como foi dito pelo CRIADOR ou simplesmente não falar com o CRIADOR e inventar só para conseguir CashBack como<br>
+          <br>Por exemplo: “Eu sou o Melhor Amigo do CRIADOR, queria o CASHBACK do meu Pagamento”,<br><br>
+          Será <span class="red-bright">PENALIZADO</span> entre, no mínimo 
+          <span class="red-bright">KICK</span> do <span class="red-bright">SERVER</span> até 
+          <span class="red-bright">BANIDO de FAZER COMPRAS no site + BANIDO DO SERVIDOR</span>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-col">
+        <h4>Puss in Boots</h4>
+        <p>O marketplace oficial do gato mais elegante e ousado de todos os tempos e Streamer do TIKTOK.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Links Rápidos</h4>
+        <a href="index.html#categorias">Categorias</a>
+        <a href="index.html#produtos">Produtos</a>
+        <a href="ofertas.html">Ofertas</a>
+      </div>
+      <div class="footer-col">
+        <h4>Ajuda</h4>
+        <a href="Envios.html">Envios</a>
+        <a href="devoluções.html">Devoluções</a>
+        <a href="cashback.html">CashBack</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <p>📞 +351 913 641 764</p>
+        <p>📍 Porto</p>
+      </div>
+    </div>
+    <div class="copyright">
+      © 2026 Puss in Boots Grand Marketplace — Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 45, density: { enable: true, value_area: 800 } },
+        color: { value: "#d4af37" },
+        shape: { type: "circle" },
+        opacity: { value: 0.35, random: true },
+        size: { value: 3, random: true },
+        line_linked: { enable: true, distance: 140, color: "#d4af37", opacity: 0.12, width: 1 },
+        move: { enable: true, speed: 1.1, direction: "none", random: true, out_mode: "out" }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" } }
+      },
+      retina_detect: true
+    });
+
+    window.addEventListener("scroll", () => {
+      document.getElementById("navbar").classList.toggle("scrolled", window.scrollY > 50);
+    });
+
+    const reveals = document.querySelectorAll(".reveal");
+    const revealOnScroll = () => {
+      reveals.forEach(el => {
+        if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add("active");
+      });
+    };
+    window.addEventListener("scroll", revealOnScroll);
+    revealOnScroll();
+  </script>
+</body>
+</html>

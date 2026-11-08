@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="logo.ico" />
+  <title>Formulário de Pagamento — Puss in Boots Grand Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-light: #f1d27a;
+      --emerald: #0f3d2e;
+      --emerald-light: #1a5c45;
+      --orange: #e07a2f;
+      --dark: #0c0c0c;
+      --cream: #f8f1e3;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--cream);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      background: radial-gradient(ellipse at bottom, #1a2a1f 0%, #0c0c0c 70%);
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(12, 12, 12, 0.75);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+      z-index: 1000;
+      transition: all 0.4s ease;
+    }
+
+    nav.scrolled {
+      padding: 0.7rem 5%;
+      background: rgba(12, 12, 12, 0.92);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+
+    .logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      letter-spacing: 1px;
+    }
+
+    .logo span {
+      color: var(--cream);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--cream);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gold);
+      transition: width 0.35s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .cart-btn {
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      color: #111;
+      border: none;
+      padding: 0.7rem 1.4rem;
+      border-radius: 50px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .cart-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+    }
+
+    /* ===== PAGE ===== */
+    .page-hero {
+      padding: 9rem 5% 2.5rem;
+      text-align: center;
+    }
+
+    .page-hero h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.2rem, 5vw, 3.1rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.8rem;
+    }
+
+    .page-hero p {
+      font-size: 1.1rem;
+      opacity: 0.85;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    .form-wrapper {
+      max-width: 680px;
+      margin: 0 auto 4rem;
+      padding: 0 5%;
+    }
+
+    .form-card {
+      background: linear-gradient(145deg, #1a1a1a, #141414);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 22px;
+      padding: 2.4rem 2.2rem;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.45rem;
+      color: var(--gold-light);
+      font-size: 0.98rem;
+    }
+
+    label .required {
+      color: #ff6b6b;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: #0f0f0f;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 12px;
+      color: var(--cream);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+    }
+
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23d4af37' d='M1.41 0L6 4.58 10.59 0 12 1.41l-6 6-6-6z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    /* Checkbox */
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin: 1.8rem 0 1.5rem;
+      padding: 1rem 1.1rem;
+      background: rgba(212, 175, 55, 0.06);
+      border-radius: 12px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      accent-color: var(--gold);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .checkbox-group label {
+      margin: 0;
+      font-weight: 500;
+      color: var(--cream);
+      font-size: 0.95rem;
+      line-height: 1.45;
+      cursor: pointer;
+    }
+
+    .checkbox-group a {
+      color: var(--gold);
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    .checkbox-group a:hover {
+      color: var(--gold-light);
+    }
+
+    /* Buttons */
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    .btn-enviar {
+      flex: 1;
+      min-width: 180px;
+      background: linear-gradient(135deg, #1a7a4c, #0f5c38);
+      color: #fff;
+      border: none;
+      padding: 1rem 1.6rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 18px rgba(26, 122, 76, 0.35);
+    }
+
+    .btn-enviar:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(26, 122, 76, 0.5);
+      background: linear-gradient(135deg, #1f8f59, #147a48);
+    }
+
+    .btn-voltar {
+      flex: 1;
+      min-width: 160px;
+      background: linear-gradient(135deg, #8b1e1e, #6b1515);
+      color: #fff;
+      border: none;
+      padding: 1rem 1.6rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 18px rgba(139, 30, 30, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-voltar:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(139, 30, 30, 0.5);
+      background: linear-gradient(135deg, #a02424, #7a1a1a);
+    }
+
+    /* Warning box */
+    .aviso-final {
+      margin-top: 2rem;
+      background: linear-gradient(145deg, #2a1212, #1a0a0a);
+      border: 2px solid #e53e3e;
+      border-radius: 16px;
+      padding: 1.4rem 1.6rem;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(229, 62, 62, 0.12);
+    }
+
+    .aviso-final p {
+      color: #f8d7da;
+      font-size: 1.02rem;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .aviso-final strong {
+      color: #ff6b6b;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #0a0a0a;
+      border-top: 1px solid rgba(212,175,55,0.2);
+      padding: 4rem 5% 2rem;
+      margin-top: 3rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-col h4 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+      font-size: 1.2rem;
+    }
+
+    .footer-col a, .footer-col p {
+      color: rgba(248,241,227,0.7);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.6rem;
+      transition: color 0.3s;
+    }
+
+    .footer-col a:hover {
+      color: var(--gold);
+    }
+
+    .copyright {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      color: rgba(248,241,227,0.5);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .page-hero { padding-top: 7.5rem; }
+      .form-card { padding: 1.8rem 1.4rem; }
+      .buttons { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+
+  <!-- Navbar -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      🐱 <span>Puss in Boots</span> Grand Marketplace
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#categorias">Categorias</a></li>
+      <li><a href="index.html#avaliacoes">Avaliações</a></li>
+      <li><a href="ofertas.html">Ofertas</a></li>
+      <li><a href="Envios.html">Envios</a></li>
+    </ul>
+    <button class="cart-btn">
+      🛒 Carrinho <span style="background:#111;color:var(--gold);padding:2px 8px;border-radius:50px;font-size:0.85rem;">3</span>
+    </button>
+  </nav>
+
+  <!-- Hero -->
+  <section class="page-hero">
+    <h1>Formulário de Compra</h1>
+    <p>Preenche todos os campos com atenção. O teu pedido será enviado diretamente para a nossa equipa.</p>
+  </section>
+
+  <div class="form-wrapper">
+    <div class="form-card">
+      <!-- 
+        FORMULÁRIO ENVIA PARA: gustavovreis2007@outlook.pt
+        Usa FormSubmit.co (gratuito e sem registo obrigatório para uso básico)
+      -->
+      <form action="https://formsubmit.co/gustavovreis2007@outlook.pt" method="POST" id="formCompra">
+        
+        <!-- Configurações do FormSubmit -->
+        <input type="hidden" name="_subject" value="🛒 NOVO PEDIDO DE COMPRA - Puss in Boots Marketplace">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_next" value="https://seusite.com/obrigado.html">
+
+        <!-- Nome -->
+        <div class="form-group">
+          <label for="nome">Nome Próprio (Primeiro e último) <span class="required">*</span></label>
+          <input type="text" id="nome" name="Nome Completo" required placeholder="Ex: João Silva" autocomplete="name">
+        </div>
+
+        <!-- Discord -->
+        <div class="form-group">
+          <label for="discord">Nome de utilizador do Discord <span class="required">*</span></label>
+          <input type="text" id="discord" name="Discord" required placeholder="Ex: utilizador#1234 ou @utilizador">
+        </div>
+
+        <!-- Idade -->
+        <div class="form-group">
+          <label for="idade">Idade <span class="required">*</span></label>
+          <input type="number" id="idade" name="Idade" required min="1" max="120" placeholder="Apenas números" inputmode="numeric">
+        </div>
+
+        <!-- Categoria -->
+        <div class="form-group">
+          <label for="categoria">Categoria da compra <span class="required">*</span></label>
+          <select id="categoria" name="Categoria" required>
+            <option value="" disabled selected>Seleciona uma categoria</option>
+            <option value="Desenvolvimento de Jogos">Desenvolvimento de Jogos</option>
+            <option value="Cargos no server da Community Discord">Cargos no server da Community Discord</option>
+            <option value="Servidores, Cargos e Bots">Servidores, Cargos e Bots</option>
+            <option value="Nitro mais BARATO???">Nitro mais BARATO???</option>
+          </select>
+        </div>
+
+        <!-- Item (dinâmico) -->
+        <div class="form-group">
+          <label for="item">Item de compra <span class="required">*</span></label>
+          <select id="item" name="Item de Compra" required disabled>
+            <option value="" disabled selected>Escolhe primeiro a categoria</option>
+          </select>
+        </div>
+
+        <!-- Descrição -->
+        <div class="form-group">
+          <label for="descricao">Descreva o seu pedido <span class="required">*</span></label>
+          <textarea id="descricao" name="Descrição do Pedido" required placeholder="Explica com detalhe o que pretendes, quantidades, cores, preferências, etc."></textarea>
+        </div>
+
+        <!-- Método de Pagamento -->
+        <div class="form-group">
+          <label for="pagamento">Método de Pagamento <span class="required">*</span></label>
+          <select id="pagamento" name="Método de Pagamento" required>
+            <option value="" disabled selected>Seleciona o método</option>
+            <option value="MB Way">MB Way</option>
+            <option value="PayPal">PayPal</option>
+            <option value="PaySafeCard">PaySafeCard</option>
+            <option value="Dinheiro físico">Dinheiro físico</option>
+            <option value="Outro">Outro (indicar na descrição)</option>
+          </select>
+        </div>
+
+        <!-- Checkbox obrigatória -->
+        <div class="checkbox-group">
+          <input type="checkbox" id="aceito" name="Aceitou Política e Termos" value="Sim - Aceito a política de não reembolso" required>
+          <label for="aceito">
+            LI e ACEITO a <a href="devolucoes.html" target="_blank">política e termos de compra e reembolso</a> <span class="required">*</span>
+          </label>
+        </div>
+
+        <!-- Botões -->
+        <div class="buttons">
+          <button type="submit" class="btn-enviar">✓ Enviar pedido da compra</button>
+          <a href="index.html" class="btn-voltar">← Voltar à loja</a>
+        </div>
+      </form>
+
+      <!-- Aviso final -->
+      <div class="aviso-final">
+        <p>
+          ⚠️ <strong>Não faças as coisas todas às pressas!</strong><br>
+          Lê de novo antes que te enganes e que leves com um <strong>"NÃO"</strong> ao Reembolso.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-col">
+        <h4>Puss in Boots</h4>
+        <p>O marketplace oficial do gato mais elegante e ousado de todos os tempos e Streamer do TIKTOK.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Links Rápidos</h4>
+        <a href="index.html#categorias">Categorias</a>
+        <a href="index.html#avaliacoes">Avaliações</a>
+        <a href="ofertas.html">Ofertas</a>
+      </div>
+      <div class="footer-col">
+        <h4>Ajuda</h4>
+        <a href="Envios.html">Envios</a>
+        <a href="devolucoes.html">Devoluções</a>
+        <a href="cashback.html">CashBack</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <p>📞 +351 913 641 764</p>
+        <p>📍 Porto</p>
+      </div>
+    </div>
+    <div class="copyright">
+      © 2026 Puss in Boots Grand Marketplace — Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    // Particles
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 50, density: { enable: true, value_area: 800 } },
+        color: { value: "#d4af37" },
+        shape: { type: "circle" },
+        opacity: { value: 0.35, random: true },
+        size: { value: 3, random: true },
+        line_linked: {
+          enable: true,
+          distance: 140,
+          color: "#d4af37",
+          opacity: 0.12,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: 1.1,
+          direction: "none",
+          random: true,
+          out_mode: "out"
+        }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: {
+          onhover: { enable: true, mode: "grab" },
+          onclick: { enable: true, mode: "push" }
+        },
+        modes: {
+          grab: { distance: 140, line_linked: { opacity: 0.35 } },
+          push: { particles_nb: 3 }
+        }
+      },
+      retina_detect: true
+    });
+
+    // Navbar scroll
+    window.addEventListener("scroll", () => {
+      document.getElementById("navbar").classList.toggle("scrolled", window.scrollY > 50);
+    });
+
+    // ===== ITENS POR CATEGORIA =====
+    const itensPorCategoria = {
+      "Desenvolvimento de Jogos": [
+        "Map Maker no Roblox",
+        "Scripts e LocalScripts",
+        "Modelos no Roblox",
+        "Outro (especificar na descrição)"
+      ],
+      "Cargos no server da Community Discord": [
+        "Cargo 🛡️ MODERATOR 🛡️",
+        "Cargo 🔥 COMMUNITY MANAGER ⚜️",
+        "Outro cargo (especificar na descrição)"
+      ],
+      "Servidores, Cargos e Bots": [
+        "Server Completo",
+        "Configuração de Bots + Canais",
+        "28 Impulsos de Servidor",
+        "Outro (especificar na descrição)"
+      ],
+      "Nitro mais BARATO???": [
+        "Nitro Premium (Anual)",
+        "Nitro Premium (Mensal)",
+        "Nitro Basic (Mensal)",
+        "Outro (especificar na descrição)"
+      ]
+    };
+
+    const categoriaSelect = document.getElementById("categoria");
+    const itemSelect = document.getElementById("item");
+
+    categoriaSelect.addEventListener("change", function () {
+      const categoria = this.value;
+      itemSelect.innerHTML = "";
+
+      if (categoria && itensPorCategoria[categoria]) {
+        itemSelect.disabled = false;
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        placeholder.textContent = "Seleciona o item";
+        itemSelect.appendChild(placeholder);
+
+        itensPorCategoria[categoria].forEach(item => {
+          const opt = document.createElement("option");
+          opt.value = item;
+          opt.textContent = item;
+          itemSelect.appendChild(opt);
+        });
+      } else {
+        itemSelect.disabled = true;
+        const opt = document.createElement("option");
+        opt.value = "";
+        opt.disabled = true;
+        opt.selected = true;
+        opt.textContent = "Escolhe primeiro a categoria";
+        itemSelect.appendChild(opt);
+      }
+    });
+
+    // Validação extra no submit
+    document.getElementById("formCompra").addEventListener("submit", function (e) {
+      const idade = document.getElementById("idade").value;
+      if (!idade || isNaN(idade) || idade < 1) {
+        e.preventDefault();
+        alert("Por favor, indica uma idade válida (apenas números).");
+        return;
+      }
+
+      if (!document.getElementById("aceito").checked) {
+        e.preventDefault();
+        alert("Tens de aceitar a política e termos de compra e reembolso para continuar.");
+        return;
+      }
+    });
+  </script>
+</body>
+</html>

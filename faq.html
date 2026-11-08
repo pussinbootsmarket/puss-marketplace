@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ — Puss in Boots Grand Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-light: #f1d27a;
+      --emerald: #0f3d2e;
+      --emerald-light: #1a5c45;
+      --orange: #e07a2f;
+      --dark: #0c0c0c;
+      --cream: #f8f1e3;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--cream);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      background: radial-gradient(ellipse at bottom, #1a2a1f 0%, #0c0c0c 70%);
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(12, 12, 12, 0.75);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+      z-index: 1000;
+      transition: all 0.4s ease;
+    }
+
+    nav.scrolled {
+      padding: 0.7rem 5%;
+      background: rgba(12, 12, 12, 0.92);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+
+    .logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      letter-spacing: 1px;
+    }
+
+    .logo span {
+      color: var(--cream);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--cream);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gold);
+      transition: width 0.35s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .cart-btn {
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      color: #111;
+      border: none;
+      padding: 0.7rem 1.4rem;
+      border-radius: 50px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .cart-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+    }
+
+    /* ===== PAGE ===== */
+    .page-hero {
+      padding: 9rem 5% 3rem;
+      text-align: center;
+    }
+
+    .page-hero h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.3rem, 5vw, 3.2rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.8rem;
+    }
+
+    .page-hero p {
+      font-size: 1.15rem;
+      opacity: 0.85;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .faq-wrapper {
+      max-width: 800px;
+      margin: 0 auto 5rem;
+      padding: 0 5%;
+    }
+
+    .faq-item {
+      background: linear-gradient(145deg, #1a1a1a, #141414);
+      border: 1px solid rgba(212, 175, 55, 0.22);
+      border-radius: 16px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+
+    .faq-item.active {
+      border-color: var(--gold);
+    }
+
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      color: var(--cream);
+      font-family: 'Inter', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-align: left;
+      padding: 1.3rem 1.5rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      transition: color 0.3s;
+    }
+
+    .faq-question:hover {
+      color: var(--gold-light);
+    }
+
+    .faq-question .icon {
+      font-size: 1.4rem;
+      color: var(--gold);
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+
+    .faq-item.active .faq-question .icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 400px;
+    }
+
+    .faq-answer-inner {
+      padding: 0 1.5rem 1.4rem;
+      opacity: 0.9;
+      line-height: 1.65;
+      font-size: 0.98rem;
+    }
+
+    .faq-answer-inner a {
+      color: var(--gold);
+      text-decoration: underline;
+    }
+
+    .faq-answer-inner a:hover {
+      color: var(--gold-light);
+    }
+
+    .aviso-box {
+      margin-top: 2.5rem;
+      background: linear-gradient(145deg, #2a1212, #1a0a0a);
+      border: 2px solid #e53e3e;
+      border-radius: 16px;
+      padding: 1.5rem 1.7rem;
+      text-align: center;
+    }
+
+    .aviso-box p {
+      color: #f8d7da;
+      font-size: 1.05rem;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .aviso-box strong {
+      color: #ff6b6b;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #0a0a0a;
+      border-top: 1px solid rgba(212,175,55,0.2);
+      padding: 4rem 5% 2rem;
+      margin-top: 3rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-col h4 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+      font-size: 1.2rem;
+    }
+
+    .footer-col a, .footer-col p {
+      color: rgba(248,241,227,0.7);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.6rem;
+      transition: color 0.3s;
+    }
+
+    .footer-col a:hover {
+      color: var(--gold);
+    }
+
+    .copyright {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      color: rgba(248,241,227,0.5);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .page-hero { padding-top: 7.5rem; }
+      .faq-question { font-size: 0.98rem; padding: 1.15rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+
+  <!-- Navbar -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      🐱 <span>Puss in Boots</span> Grand Marketplace
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#categorias">Categorias</a></li>
+      <li><a href="index.html#avaliacoes">Avaliações</a></li>
+      <li><a href="ofertas.html">Ofertas</a></li>
+      <li><a href="Envios.html">Envios</a></li>
+    </ul>
+    <button class="cart-btn">
+      🛒 Carrinho <span style="background:#111;color:var(--gold);padding:2px 8px;border-radius:50px;font-size:0.85rem;">3</span>
+    </button>
+  </nav>
+
+  <!-- Hero -->
+  <section class="page-hero">
+    <h1>Perguntas Frequentes</h1>
+    <p>Encontra aqui as respostas às dúvidas mais comuns sobre compras, entregas e políticas do marketplace.</p>
+  </section>
+
+  <div class="faq-wrapper">
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Como faço uma compra?
+        <span class="icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          Basta escolheres a categoria e o item que pretendes, preencheres o <a href="formulario-pagamento.html">formulário de compra</a> com todos os dados e enviares. Depois de recebermos o pedido, entraremos em contacto contigo através do Discord para confirmar o pagamento e avançar com a entrega.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Quais são os métodos de pagamento aceites?
+        <span class="icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          Aceitamos MB Way, PayPal, PaySafeCard e dinheiro físico (em situações combinadas). No formulário podes escolher a opção que preferires. Se precisares de outro método, indica na descrição do pedido.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Quanto tempo demora a entrega?
+        <span class="icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          O tempo de entrega varia consoante o produto:<br><br>
+          • <strong>Nitro e Cargos Discord</strong> → normalmente no mesmo dia ou em 24h<br>
+          • <strong>Scripts / Modelos / Mapas</strong> → 1 a 7 dias (depende da complexidade)<br>
+          • <strong>Servidores completos</strong> → até 11 dias<br><br>
+          Sempre que possível tentamos entregar o mais rápido possível.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Posso pedir reembolso?
+        <span class="icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <strong>Não.</strong> Todos os pagamentos são finais. Não efetuamos qualquer tipo de reembolso, independentemente do motivo. Podes consultar a nossa política completa na página de <a href="devolucoes.html">Devoluções</a>.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        O que acontece se me enganar no pedido?
+        <span class="icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          Lê tudo com atenção antes de enviares. Depois de confirmado o pagamento, não é possível alterar ou cancelar o pedido. Por isso o aviso no formulário: <em>“Não faças as coisas todas às pressas!”</em>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Os produtos são originais / seguros?
+        <span class="icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          Sim. Trabalhamos apenas com métodos seguros e legítimos. Os cargos, Nitro e serviços digitais são entregues de forma transparente. Já temos várias avaliações positivas de clientes satisfeitos.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Como sei que o meu pedido foi recebido?
+        <span class="icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          Assim que envias o formulário, recebemos automaticamente um email com todos os teus dados. Depois disso, contactamos-te pelo Discord que indicaste para confirmar e avançar com o pagamento.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Posso comprar se for menor de idade?
+        <span class="icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          Sim, desde que tenhas autorização dos teus pais ou encarregados de educação e uses um método de pagamento válido. A responsabilidade da compra é sempre do comprador.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Como posso contactar o suporte?
+        <span class="icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          Podes enviar email para <strong style="color: var(--gold);">gustavovreis2007@outlook.pt</strong> ou falar connosco diretamente no Discord da community. Respondemos o mais rápido possível.
+        </div>
+      </div>
+    </div>
+
+    <!-- Aviso importante -->
+    <div class="aviso-box">
+      <p>
+        ⚠️ <strong>Lembra-te:</strong> Não existem reembolsos.<br>
+        Lê sempre a <a href="devolucoes.html" style="color:#ff6b6b; text-decoration:underline;">política de devoluções</a> antes de comprares.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-col">
+        <h4>Puss in Boots</h4>
+        <p>O marketplace oficial do gato mais elegante e ousado de todos os tempos e Streamer do TIKTOK.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Links Rápidos</h4>
+        <a href="index.html#categorias">Categorias</a>
+        <a href="index.html#avaliacoes">Avaliações</a>
+        <a href="ofertas.html">Ofertas</a>
+      </div>
+      <div class="footer-col">
+        <h4>Ajuda</h4>
+        <a href="Envios.html">Envios</a>
+        <a href="devolucoes.html">Devoluções</a>
+        <a href="cashback.html">CashBack</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <p>📧 gustavovreis2007@outlook.pt</p>
+        <p>📍 Porto</p>
+      </div>
+    </div>
+    <div class="copyright">
+      © 2026 Puss in Boots Grand Marketplace — Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    // Particles
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 50, density: { enable: true, value_area: 800 } },
+        color: { value: "#d4af37" },
+        shape: { type: "circle" },
+        opacity: { value: 0.35, random: true },
+        size: { value: 3, random: true },
+        line_linked: {
+          enable: true,
+          distance: 140,
+          color: "#d4af37",
+          opacity: 0.12,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: 1.1,
+          direction: "none",
+          random: true,
+          out_mode: "out"
+        }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: {
+          onhover: { enable: true, mode: "grab" },
+          onclick: { enable: true, mode: "push" }
+        },
+        modes: {
+          grab: { distance: 140, line_linked: { opacity: 0.35 } },
+          push: { particles_nb: 3 }
+        }
+      },
+      retina_detect: true
+    });
+
+    // Navbar scroll
+    window.addEventListener("scroll", () => {
+      document.getElementById("navbar").classList.toggle("scrolled", window.scrollY > 50);
+    });
+
+    // FAQ Accordion
+    document.querySelectorAll(".faq-question").forEach(button => {
+      button.addEventListener("click", () => {
+        const item = button.parentElement;
+        const isActive = item.classList.contains("active");
+
+        // Fecha todos
+        document.querySelectorAll(".faq-item").forEach(i => i.classList.remove("active"));
+
+        // Abre o clicado se não estava aberto
+        if (!isActive) {
+          item.classList.add("active");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
