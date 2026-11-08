@@ -538,7 +538,8 @@
       </div>
       <div class="footer-col">
         <h4>Contacto</h4>
-        <p>📞 +351 913 641 764</p>
+        <p>� suporte123452@gmail.com</p>
+        <p>�📞 +351 913 641 764</p>
         <p>📍 Porto</p>
       </div>
     </div>
@@ -651,21 +652,79 @@
       }
     });
 
-    // Validação extra no submit
-    document.getElementById("formCompra").addEventListener("submit", function (e) {
-      const idade = document.getElementById("idade").value;
-      if (!idade || isNaN(idade) || idade < 1) {
-        e.preventDefault();
-        alert("Por favor, indica uma idade válida (apenas números).");
-        return;
-      }
+    
+// ===== ENVIO AUTOMÁTICO PARA DISCORD + EMAIL =====
 
-      if (!document.getElementById("aceito").checked) {
-        e.preventDefault();
-        alert("Tens de aceitar a política e termos de compra e reembolso para continuar.");
-        return;
-      }
+const formCompra = document.getElementById("formCompra");
+
+// Substitui pelo endereço verdadeiro do teu Cloudflare Worker
+const DISCORD_API = "https://discord.com/api/webhooks/1568798948427169842/T9cN2D5D0lh6puS4r8a9CLVwK3IzZyjG7KmgaBNKJeJh_LONmjGbtidLk2KRQtyauWAZ";
+
+formCompra.addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const idade = document.getElementById("idade").value;
+  const aceitou = document.getElementById("aceito").checked;
+
+  if (!idade || isNaN(idade) || idade < 1 || idade > 120) {
+    alert("Por favor, indica uma idade válida.");
+    return;
+  }
+
+  if (!aceitou) {
+    alert("Tens de aceitar a política e os termos de compra.");
+    return;
+  }
+
+  const botao = formCompra.querySelector(".btn-enviar");
+  const textoOriginal = botao.textContent;
+
+  botao.disabled = true;
+  botao.textContent = "A enviar pedido...";
+
+  const pedido = {
+    nome: document.getElementById("nome").value.trim(),
+    discord: document.getElementById("discord").value.trim(),
+    idade: idade,
+    categoria: document.getElementById("categoria").value,
+    item: document.getElementById("item").value,
+    descricao: document.getElementById("descricao").value.trim(),
+    pagamento: document.getElementById("pagamento").value,
+    aceitou: aceitou
+  };
+
+  try {
+    // Primeiro envia a notificação para o Discord
+    const resposta = await fetch(DISCORD_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(pedido)
     });
+
+    if (!resposta.ok) {
+      throw new Error("Erro no envio para o Discord.");
+    }
+
+    // Se o Discord confirmar, envia também o email
+    botao.textContent = "A encaminhar email...";
+
+    HTMLFormElement.prototype.submit.call(formCompra);
+
+  } catch (erro) {
+    console.error("Erro ao enviar pedido:", erro);
+
+    alert(
+      "Não foi possível enviar o pedido neste momento. " +
+      "Verifica a ligação e tenta novamente."
+    );
+
+    botao.disabled = false;
+    botao.textContent = textoOriginal;
+  }
+});
+
   </script>
 </body>
 </html>
