@@ -682,16 +682,16 @@ formCompra.addEventListener("submit", async function (e) {
   botao.disabled = true;
   botao.textContent = "A enviar pedido...";
 
-  const pedido = {
-    nome: document.getElementById("nome").value.trim(),
-    discord: document.getElementById("discord").value.trim(),
-    idade: idade,
-    categoria: document.getElementById("categoria").value,
-    item: document.getElementById("item").value,
-    descricao: document.getElementById("descricao").value.trim(),
-    pagamento: document.getElementById("pagamento").value,
-    aceitou: aceitou
-  };
+const pedido = {
+  nome: document.getElementById("nome").value.trim(),
+  discord: document.getElementById("discord").value.trim(),
+  idade: document.getElementById("idade").value,
+  categoria: document.getElementById("categoria").value,
+  item: document.getElementById("item").value,
+  descricao: document.getElementById("descricao").value.trim(),
+  pagamento: document.getElementById("pagamento").value,
+  aceitou: document.getElementById("aceito").checked
+};
 
   try {
     // Primeiro envia a notificação para o Discord
